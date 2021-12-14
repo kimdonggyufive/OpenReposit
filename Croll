@@ -1,0 +1,30 @@
+import appex
+if not appex.is_running_extension():
+    return   
+pageInfo = appex.get_web_page_info()
+if not pageInfo:
+    return
+    
+from bs4 import BeautifulSoup
+pageInfo = appex.get_web_page_info()
+soup = BeautifulSoup(pageInfo['html'], 'html5lib')
+
+# save to photo album
+# https://forum.omz-software.com/topic/3889/adding-an-image-to-my-own-album-in-photos-how/2
+def add_to_album(image_path, album_name):
+    try:
+    	album = [a for a in photos.get_albums() if a.title == album_name][0]
+    except IndexError:
+        album = photos.create_album(album_name)
+    asset = photos.create_image_asset(image_path)
+    album.add_assets([asset])
+ 
+ 
+imgs = soup.find_all('img')
+for i in imgs:
+    imgUrl = urlparse(i['src'])
+    with request.urlopen(imgUrl.geturl()) as res:
+        imgData = res.read()
+        with Image.open(BytesIO(imgData)) as img:
+            img.save(filename)
+            add_to_album(filename, 'Pythonista')
